@@ -98,9 +98,12 @@ PUKIWIKI_URL=https://wiki.example.com/ uv run pukiwiki-mcp
 
 ### A. HTTP サービスとして起動（`docker compose up`）
 
+イメージはリリースごとに `ghcr.io/epochnet/pukiwiki-mcp` に置いています（`:latest` と `:<バージョン>`）。
+
 ```bash
-cp .env.example .env       # PUKIWIKI_URL を編集
-docker compose up --build  # http://127.0.0.1:8000/mcp で待受
+cp .env.example .env   # PUKIWIKI_URL を編集
+docker compose pull    # 手元のソースからビルドするときは、代わりに up に --build を付ける
+docker compose up      # http://127.0.0.1:8000/mcp で待受
 ```
 
 - コンテナの中では `0.0.0.0` で待ち受け、ホスト側には `127.0.0.1:8000` だけで公開します（`compose.yml`）
@@ -111,12 +114,11 @@ HTTP トランスポート対応の MCP クライアントからは `http://127.
 ### B. stdio として起動（`docker run -i`）
 
 ```bash
-docker build -t pukiwiki-mcp .
 docker run -i --rm \
   -e PUKIWIKI_MCP_TRANSPORT=stdio \
   -e PUKIWIKI_URL=https://wiki.example.com/ \
   -e PUKIWIKI_ENCODING=euc-jp \
-  pukiwiki-mcp
+  ghcr.io/epochnet/pukiwiki-mcp:latest
 ```
 
 > イメージの既定のトランスポートは `streamable-http`（compose 用）です。stdio で使うときは上のように上書きします。

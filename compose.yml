@@ -1,7 +1,7 @@
 services:
   pukiwiki-mcp:
     build: .
-    image: pukiwiki-mcp:latest
+    image: ghcr.io/epochnet/pukiwiki-mcp:latest
     container_name: pukiwiki-mcp
     # Connection settings come from a local .env file (copy from .env.example).
     # Marked optional so `compose up` does not fail if .env is absent; in that
