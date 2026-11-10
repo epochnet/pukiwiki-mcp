@@ -1,0 +1,21 @@
+services:
+  pukiwiki-mcp:
+    build: .
+    image: pukiwiki-mcp:latest
+    container_name: pukiwiki-mcp
+    # Connection settings come from a local .env file (copy from .env.example).
+    # Marked optional so `compose up` does not fail if .env is absent; in that
+    # case PUKIWIKI_URL must be supplied via the environment instead.
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # Run as a long-lived HTTP MCP service for `compose up`.
+      # 0.0.0.0 is inside the container only; the port is published on the
+      # host's 127.0.0.1, so the server is reachable from this machine only.
+      PUKIWIKI_MCP_TRANSPORT: streamable-http
+      PUKIWIKI_MCP_HOST: 0.0.0.0
+      PUKIWIKI_MCP_PORT: "8000"
+    ports:
+      - "127.0.0.1:8000:8000"
+    restart: unless-stopped
